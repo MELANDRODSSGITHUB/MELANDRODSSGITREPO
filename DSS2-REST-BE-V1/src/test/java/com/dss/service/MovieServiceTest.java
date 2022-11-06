@@ -27,7 +27,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class MovieServiceTest {
+class MovieServiceTest {
     @Mock
     private ActorRepository actorRepository;
     @Mock
@@ -92,7 +92,7 @@ public class MovieServiceTest {
         Movie testMovie = movie;
         testMovie.setYearOfRelease(2022);
         Mockito.when(movieRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testMovie));
-        Assertions.assertThrows(DeleteNewMovieException.class, () -> movieService.deleteMovie(anyLong()));
+        Assertions.assertThrows(DeleteNewMovieException.class, () -> movieService.deleteMovie(testMovie.getMovieId()));
     }
 
     @Test
@@ -135,8 +135,8 @@ public class MovieServiceTest {
     void addActorDetailsToTheMovieSuccess() {
         Mockito.when(actorRepository.findById(anyLong())).thenReturn(Optional.ofNullable(actor));
         Mockito.when(movieRepository.findById(anyLong())).thenReturn(Optional.ofNullable(movie));
-        Assertions.assertEquals(movieService.addActorDetailsToTheMovie(actor.getActorId(), movie.getMovieId()),
-                ResponseMsgConstant.SUCCESSFULLY_ADDED_ACTOR_DETAILS_TO_MOVIE_MSG);
+        Assertions.assertEquals(ResponseMsgConstant.SUCCESSFULLY_ADDED_ACTOR_DETAILS_TO_MOVIE_MSG,
+                movieService.addActorDetailsToTheMovie(actor.getActorId(), movie.getMovieId()));
     }
 
     @Test

@@ -75,7 +75,7 @@ public class MovieServiceImpl implements MovieService {
 
         Movie movie = movieResult.get();
         int currentYear = LocalDate.now().getYear();
-        if (currentYear <= movie.getYearOfRelease() ? (currentYear - movie.getYearOfRelease() < 1) : false) {
+        if (currentYear >= movie.getYearOfRelease() && (currentYear - movie.getYearOfRelease() < 1)) {
             throw new DeleteNewMovieException(ResponseMsgConstant.FAILED_TO_DELETE_MOVIE_MSG);
         }
 
