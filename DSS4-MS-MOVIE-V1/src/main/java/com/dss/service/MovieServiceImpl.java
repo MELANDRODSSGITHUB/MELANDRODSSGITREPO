@@ -3,6 +3,7 @@ package com.dss.service;
 import com.dss.entity.Actor;
 import com.dss.entity.Movie;
 import com.dss.exception.ActorNotFoundException;
+import com.dss.exception.DeleteNewMovieException;
 import com.dss.exception.DuplicateMovieException;
 import com.dss.exception.MovieNotFoundException;
 import com.dss.model.SearchMovieRequest;
@@ -13,6 +14,7 @@ import com.dss.util.ResponseMsgConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +72,12 @@ public class MovieServiceImpl implements MovieService {
         if (!movieResult.isPresent()) {
             throw new MovieNotFoundException(ResponseMsgConstant.FAILED_TO_DELETE_MOVIE_MSG);
         }
+        Movie movie = movieResult.get();
+        int currentYear = LocalDate.now().getYear();
+        if (currentYear <= movie.getYearOfRelease() ? (currentYear - movie.getYearOfRelease() < 1) : false) {
+            throw new DeleteNewMovieException(ResponseMsgConstant.FAILED_TO_DELETE_MOVIE_MSG);
+        }
+
         movieRepository.deleteById(movieId);
         Movie deletedMovie = movieResult.get();
         return ResponseMsgConstant.SUCCESSFULLY_DELETED_MOVIE_MSG.concat(" (Id: " + deletedMovie.getMovieId()

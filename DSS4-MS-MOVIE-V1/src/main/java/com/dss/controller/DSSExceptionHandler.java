@@ -47,7 +47,7 @@ public class DSSExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {DuplicateMovieException.class})
+    @ExceptionHandler(value = {DuplicateMovieException.class, DeleteNewMovieException.class})
     public ResponseEntity<Object> conflictRequestException(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }

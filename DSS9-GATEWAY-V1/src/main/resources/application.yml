@@ -7,6 +7,23 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      routes:
+        - id: customers
+          uri: lb://customer-service
+          predicates:
+            - Path=/dss/api/admin/**
+        - id: movies
+          uri: lb://movie-service
+          predicates:
+          - Path=/dss/api/movie/**
+        - id: actors
+          uri: lb://actor-service
+          predicates:
+            - Path=/dss/api/actor/**
+        - id: reviews
+          uri: lb://review-service
+          predicates:
+            - Path=/dss/api/review/**
 
 eureka:
   client:

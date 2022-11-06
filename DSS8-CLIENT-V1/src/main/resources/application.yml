@@ -1,6 +1,6 @@
 spring:
   application:
-    name: client-service
+    name: dss-core-client-service
 
 # register with eureka
 eureka:

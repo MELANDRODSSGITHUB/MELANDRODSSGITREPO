@@ -53,7 +53,8 @@ public class DSSExceptionHandler extends ResponseEntityExceptionHandler {
             DuplicateAdminException.class,
             DuplicateReviewException.class,
             ActorHaveMovieDetailsException.class,
-            EmailAlreadyBeenUsedException.class
+            EmailAlreadyBeenUsedException.class,
+            DeleteNewMovieException.class
     })
     public ResponseEntity<Object> conflictRequestException(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
