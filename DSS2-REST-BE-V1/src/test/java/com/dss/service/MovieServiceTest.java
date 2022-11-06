@@ -3,6 +3,7 @@ package com.dss.service;
 import com.dss.entity.Actor;
 import com.dss.entity.Movie;
 import com.dss.exception.ActorNotFoundException;
+import com.dss.exception.DeleteNewMovieException;
 import com.dss.exception.DuplicateMovieException;
 import com.dss.exception.MovieNotFoundException;
 import com.dss.model.SearchMovieRequest;
@@ -84,6 +85,14 @@ public class MovieServiceTest {
     void deleteMovieThrowMovieNotFoundException() {
         Mockito.when(movieRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
         Assertions.assertThrows(MovieNotFoundException.class, () -> movieService.deleteMovie(anyLong()));
+    }
+
+    @Test
+    void deleteMovieThrowDeleteNewMovieException() {
+        Movie testMovie = movie;
+        testMovie.setYearOfRelease(2022);
+        Mockito.when(movieRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testMovie));
+        Assertions.assertThrows(DeleteNewMovieException.class, () -> movieService.deleteMovie(anyLong()));
     }
 
     @Test
