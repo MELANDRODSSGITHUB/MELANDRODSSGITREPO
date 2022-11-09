@@ -7,6 +7,7 @@ import com.dss.model.UpdateMovieRequest;
 import com.dss.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,11 @@ public class MovieController {
     @Autowired
     MovieService movieService;
 
-    @PostMapping(ADD_MOVIE_URL)
+    public void setMovieService(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
+    @PostMapping(value = ADD_MOVIE_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addMovie(@Valid @RequestBody Movie movie) {
         return new ResponseEntity<>(movieService.addMovie(movie), HttpStatus.CREATED);
     }
@@ -38,7 +43,7 @@ public class MovieController {
                 .body(movieService.getAllMovie());
     }
 
-    @PutMapping(UPDATE_MOVIE_URL)
+    @PutMapping(value = UPDATE_MOVIE_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateMovie(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
         return new ResponseEntity<>(movieService.updateMovie(updateMovieRequest), HttpStatus.OK);
     }
@@ -53,7 +58,7 @@ public class MovieController {
         return new ResponseEntity<>(movieService.addActorDetailsToTheMovie(actorId, movieId), HttpStatus.OK);
     }
 
-    @GetMapping(SEARCH_MOVIE_URL)
+    @GetMapping(value = SEARCH_MOVIE_URL,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Movie>> searchMovie(@Valid @RequestBody SearchMovieRequest searchMovieRequest) {
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body(movieService.searchMovie(searchMovieRequest));

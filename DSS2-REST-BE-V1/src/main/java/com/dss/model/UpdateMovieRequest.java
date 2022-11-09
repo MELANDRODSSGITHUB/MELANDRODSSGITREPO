@@ -1,9 +1,6 @@
 package com.dss.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
@@ -13,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class UpdateMovieRequest {
 

@@ -7,6 +7,7 @@ import com.dss.service.ActorService;
 import com.dss.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +25,12 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    public AdminController() {
-    }
-
-    public AdminController(AdminService adminService) {
+    public void setAdminService(AdminService adminService) {
         this.adminService = adminService;
     }
 
-    @PostMapping(REGISTER_ADMIN_URL)
+
+    @PostMapping(value = REGISTER_ADMIN_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> registerAdmin(@Valid @RequestBody AdminRequest adminRequest) {
         return new ResponseEntity<>(adminService.addAdmin(adminRequest), HttpStatus.CREATED);
     }

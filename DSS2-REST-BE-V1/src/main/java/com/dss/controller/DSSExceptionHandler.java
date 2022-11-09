@@ -21,6 +21,7 @@ import java.util.Map;
 public class DSSExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> responseBody = new LinkedHashMap<>();
         responseBody.put("timestamp", LocalDateTime.now());
@@ -35,7 +36,8 @@ public class DSSExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(responseBody,headers,status);
     }
 
-    @ExceptionHandler(value = {Exception.class})
+    @ExceptionHandler(value = {Exception.class,
+            RuntimeException.class})
     public ResponseEntity<Object> exception(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
