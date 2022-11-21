@@ -1,18 +1,16 @@
 package com.dss.service;
 
-import com.dss.entity.Admin;
+import com.dss.entity.Role;
+import com.dss.entity.User;
 import com.dss.exception.DuplicateAdminException;
 import com.dss.exception.EmailAlreadyBeenUsedException;
-import com.dss.exception.LoginAuthenticationException;
-import com.dss.model.AdminRequest;
+import com.dss.model.UserRequest;
 import com.dss.repository.AdminRepository;
-import com.dss.util.DSSUtil;
 import com.dss.util.ResponseMsgConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,37 +25,42 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public String addAdmin(AdminRequest adminRequest) {
-        Admin addedAdmin;
-        Optional<Admin> adminOptional = adminRepository.findById(adminRequest.getAdminId());
+    public String addAdmin(UserRequest userRequest) {
+        User resultUser;
+        Optional<User> adminOptional = adminRepository.findById(userRequest.getAdminId());
         if (adminOptional.isPresent()) {
             throw new DuplicateAdminException(ResponseMsgConstant.FAILED_TO_REGISTER_ADMIN_MSG);
         }
-        Optional<Admin> adminEmailOptional = adminRepository.findAdminByEmail(adminRequest.getEmail());
+        Optional<User> adminEmailOptional = adminRepository.findAdminByEmail(userRequest.getEmail());
         if (adminEmailOptional.isPresent()) {
             throw new EmailAlreadyBeenUsedException(ResponseMsgConstant.FAILED_TO_REGISTER_ADMIN_MSG);
         }
+        Role role = new Role();
+        role.setDescription(userRequest.getRole());
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(role);
 
-        Admin admin = Admin.builder()
-                .firstName(adminRequest.getFirstName())
-                .lastName(adminRequest.getLastName())
-                .email(adminRequest.getEmail())
-                .password(DSSUtil.passwordEncryption(adminRequest.getPassword()))
-                .mobileNumber(adminRequest.getMobileNumber())
+        User user = User.builder()
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .email(userRequest.getEmail())
+                .password(userRequest.getPassword())
+                .mobileNumber(userRequest.getMobileNumber())
+                .roles(roleList)
                 .build();
-        addedAdmin = adminRepository.save(admin);
+        resultUser = adminRepository.save(user);
 
-        return ResponseMsgConstant.SUCCESSFULLY_REGISTER_ADMIN_MSG.concat(" (id: " + addedAdmin.getAdminId()
-                + "\t Name: " + addedAdmin.getFirstName() + " "
-                + addedAdmin.getLastName() + ")");
+        return ResponseMsgConstant.SUCCESSFULLY_REGISTER_ADMIN_MSG.concat(" (id: " + resultUser.getUserId()
+                + "\t Name: " + resultUser.getFirstName() + " "
+                + resultUser.getLastName() + ")");
     }
 
     @Override
-    public List<Admin> getAllAdmins() {
+    public List<User> getAllAdmins() {
         return adminRepository.findAll();
     }
 
-    @Override
+/*    @Override
     public String doLogin(String email, String password) {
         Optional<Admin> admin = adminRepository.findAdminByEmailAndPassword(email, DSSUtil.passwordEncryption(password));
         if (!admin.isPresent()) {
@@ -65,5 +68,5 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return ResponseMsgConstant.LOGIN_AUTHENTICATION_SUCCESS_MSG;
-    }
+    }*/
 }

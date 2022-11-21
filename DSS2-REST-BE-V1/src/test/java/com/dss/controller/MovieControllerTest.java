@@ -1,34 +1,25 @@
 package com.dss.controller;
 
 import com.dss.entity.Actor;
-import com.dss.entity.Admin;
 import com.dss.entity.Movie;
 import com.dss.exception.DuplicateMovieException;
 import com.dss.exception.MovieNotFoundException;
-import com.dss.model.AdminRequest;
+import com.dss.model.AddMovieRequest;
 import com.dss.model.SearchMovieRequest;
 import com.dss.model.UpdateMovieRequest;
-import com.dss.service.ActorService;
 import com.dss.service.MovieService;
 import com.dss.util.ResponseMsgConstant;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -57,6 +48,8 @@ public class MovieControllerTest {
     private Actor actor;
     private Movie movie;
 
+    private AddMovieRequest addMovieRequest;
+
     private UpdateMovieRequest updateMovieRequest;
 
     private SearchMovieRequest searchMovieRequest;
@@ -79,6 +72,9 @@ public class MovieControllerTest {
                 .lastName("TEST")
                 .age(32).gender("M")
                 .movies(new ArrayList<>()).build();
+        addMovieRequest = AddMovieRequest.builder().movieId(1).cost(250).image("test.png")
+                .title("MOVIE TITLE TEST")
+                .yearOfRelease(2000).build();
         movie = Movie.builder()
                 .movieId(1).cost(250).image("test.png")
                 .title("MOVIE TITLE TEST")
@@ -104,8 +100,9 @@ public class MovieControllerTest {
     @Test
     @DisplayName("Successfully added a movie.")
     void addMovie() throws Exception {
-        String requestJson = ow.writeValueAsString(movie);
-        Mockito.when(movieService.addMovie(any(Movie.class))).thenReturn(anyString());
+        String requestJson = ow.writeValueAsString(addMovieRequest);
+        Mockito.when(movieService.addMovie(any(AddMovieRequest.class))).thenReturn(ResponseMsgConstant.SUCCESSFULLY_ADDED_MOVIE_MSG.concat(" (id: "
+                + movie.getMovieId() + "\t Title:" + movie.getTitle() + ")"));
         this.mockMvc.perform(MockMvcRequestBuilders.post("/dss2/api/movie/add")
                         .content(requestJson)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -117,8 +114,8 @@ public class MovieControllerTest {
     @Test
     @DisplayName("Successfully validated the movie id for duplication.")
     void addMovieThrowDuplicateMovieException() throws Exception {
-        String requestJson = ow.writeValueAsString(movie);
-        Mockito.when(movieService.addMovie(any(Movie.class))).thenThrow(new DuplicateMovieException(ResponseMsgConstant.FAILED_TO_ADD_MOVIE_MSG));
+        String requestJson = ow.writeValueAsString(addMovieRequest);
+        Mockito.when(movieService.addMovie(any(AddMovieRequest.class))).thenThrow(new DuplicateMovieException(ResponseMsgConstant.FAILED_TO_ADD_MOVIE_MSG));
         this.mockMvc.perform(MockMvcRequestBuilders.post("/dss2/api/movie/add")
                         .content(requestJson)
                         .accept(MediaType.APPLICATION_JSON_VALUE)

@@ -6,6 +6,7 @@ import com.dss.exception.ActorHaveMovieDetailsException;
 import com.dss.exception.ActorNotFoundException;
 import com.dss.exception.DuplicateActorException;
 import com.dss.exception.MovieNotFoundException;
+import com.dss.model.ActorRequest;
 import com.dss.repository.ActorRepository;
 import com.dss.repository.MovieRepository;
 import com.dss.util.ResponseMsgConstant;
@@ -35,12 +36,18 @@ public class ActorServiceImpl implements ActorService {
     }
 
     @Override
-    public String addActor(Actor actor) {
+    public String addActor(ActorRequest actorRequest) {
         Actor addedActor;
-        Optional<Actor> actorOptional = actorRepository.findById(actor.getActorId());
+        Optional<Actor> actorOptional = actorRepository.findById(actorRequest.getActorId());
         if (actorOptional.isPresent()) {
             throw new DuplicateActorException(ResponseMsgConstant.FAILED_TO_ADD_ACTOR_MSG);
         }
+        Actor actor = Actor.builder()
+                .firstName(actorRequest.getFirstName())
+                .lastName(actorRequest.getLastName())
+                .age(actorRequest.getAge())
+                .gender(actorRequest.getGender())
+                .build();
         addedActor = actorRepository.save(actor);
 
         return ResponseMsgConstant.SUCCESSFULLY_ADDED_ACTOR_MSG +
@@ -67,15 +74,21 @@ public class ActorServiceImpl implements ActorService {
     }
 
     @Override
-    public String updateActor(Actor actor) {
-        Optional<Actor> actorOptional = actorRepository.findById(actor.getActorId());
+    public String updateActor(ActorRequest actorRequest) {
+        Optional<Actor> actorOptional = actorRepository.findById(actorRequest.getActorId());
         if (!actorOptional.isPresent()) {
             throw new ActorNotFoundException(ResponseMsgConstant.FAILED_TO_UPDATE_ACTOR_MSG);
         }
-        actorRepository.save(actor);
+        Actor actor = Actor.builder()
+                .firstName(actorRequest.getFirstName())
+                .lastName(actorRequest.getLastName())
+                .age(actorRequest.getAge())
+                .gender(actorRequest.getGender())
+                .build();
+        Actor addedActor = actorRepository.save(actor);
 
-        return ResponseMsgConstant.SUCCESSFULLY_UPDATED_ACTOR_MSG.concat(" (Id: " + actor.getActorId() + "\t Name:"
-                + actor.getFirstName() + " " + actor.getLastName() + ")");
+        return ResponseMsgConstant.SUCCESSFULLY_UPDATED_ACTOR_MSG.concat(" (Id: " + addedActor.getActorId() + "\t Name:"
+                + addedActor.getFirstName() + " " + addedActor.getLastName() + ")");
     }
 
     @Override

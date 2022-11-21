@@ -2,6 +2,7 @@ package com.dss.controller;
 
 
 import com.dss.entity.Actor;
+import com.dss.model.ActorRequest;
 import com.dss.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class ActorController {
     ActorService actorService;
 
     @PostMapping(ADD_ACTOR_URL)
-    public ResponseEntity<Object> addActor(@Valid @RequestBody Actor actor) {
+    public ResponseEntity<Object> addActor(@Valid @RequestBody ActorRequest actor) {
         return new ResponseEntity<>(actorService.addActor(actor), HttpStatus.CREATED);
     }
 
@@ -35,8 +36,8 @@ public class ActorController {
     }
 
     @PutMapping(UPDATE_ACTOR_URL)
-    public ResponseEntity<String> updateActor(@Valid @RequestBody Actor actor) {
-        return new ResponseEntity<>(actorService.updateActor(actor), HttpStatus.OK);
+    public ResponseEntity<String> updateActor(@Valid @RequestBody ActorRequest actorRequest) {
+        return new ResponseEntity<>(actorService.updateActor(actorRequest), HttpStatus.OK);
     }
 
     @DeleteMapping(DELETE_ACTOR_URL)

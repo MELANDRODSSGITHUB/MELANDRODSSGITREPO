@@ -1,30 +1,24 @@
 spring:
   application:
     name: dss-api-gateway
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dss_db_v1?currentSchema=dss_db_v1
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
-      routes:
-        - id: customers
-          uri: lb://customer-service
-          predicates:
-            - Path=/dss/api/admin/**
-        - id: movies
-          uri: lb://movie-service
-          predicates:
-          - Path=/dss/api/movie/**
-        - id: actors
-          uri: lb://actor-service
-          predicates:
-            - Path=/dss/api/actor/**
-        - id: reviews
-          uri: lb://review-service
-          predicates:
-            - Path=/dss/api/review/**
-
 eureka:
   client:
     register-with-eureka: true
@@ -36,3 +30,7 @@ eureka:
 
 server:
   port: 8765
+
+jwt:
+  secret: BvPHGM8C0ia4uOuxxqPD5DTbWC9F9TWvPStp3pb7ARo0oK2mJ3pd3YG4lxA9i8bj6OTbadwezxgeEByY
+  expiration: 86400

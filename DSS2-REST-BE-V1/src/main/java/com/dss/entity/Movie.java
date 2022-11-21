@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class Movie {
     @Column(name = "COST")
     private int cost;
 
+    @NotNull(message = "Movie release year is required")
     @Column(name = "YEAR_OF_RELEASE")
     private int yearOfRelease;
 

@@ -1,6 +1,7 @@
 package com.dss.controller;
 
 import com.dss.entity.Actor;
+import com.dss.model.ActorRequest;
 import com.dss.service.ActorService;
 import com.dss.util.ResponseMsgConstant;
 import org.junit.jupiter.api.Assertions;
@@ -29,28 +30,22 @@ public class ActorControllerTest {
 
     private Actor actor;
 
-/*    private MockMvc mockMvc;*/
+    private ActorRequest actorRequest;
 
     @BeforeEach
     public void setUp() {
-/*        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(actorController)
-                .setControllerAdvice(new DSSExceptionHandler())
-                .build();*/
         actor = Actor.builder()
                 .actorId(1)
                 .firstName("TEST")
                 .lastName("TEST")
                 .age(32).gender("M")
                 .movies(new ArrayList<>()).build();
+        actorRequest = ActorRequest.builder()
+                .actorId(1)
+                .firstName("TEST")
+                .lastName("TEST")
+                .age(32).gender("M").build();
     }
-
-/*    @Test
-    public void testGlobalExceptionHandlerError() throws Exception {
-        Mockito.when(actorController.addActor(any(Actor.class))).thenThrow(
-                new DuplicateActorException(ResponseMsgConstant.FAILED_TO_ADD_ACTOR_MSG));
-        mockMvc.perform(post("/dss2/api/admin/register")).andExpect(status().isConflict());
-    }*/
 
     @Test
     public void getAllActors() {
@@ -63,15 +58,15 @@ public class ActorControllerTest {
 
     @Test
     public void addActor() {
-        Mockito.when(actorService.addActor(any(Actor.class))).thenReturn(anyString());
-        ResponseEntity<Object> response = actorController.addActor(actor);
+        Mockito.when(actorService.addActor(any(ActorRequest.class))).thenReturn(anyString());
+        ResponseEntity<Object> response = actorController.addActor(actorRequest);
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     public void updateActor() {
-        Mockito.when(actorService.updateActor(any(Actor.class))).thenReturn(anyString());
-        ResponseEntity<String> response = actorController.updateActor(actor);
+        Mockito.when(actorService.updateActor(any(ActorRequest.class))).thenReturn(anyString());
+        ResponseEntity<String> response = actorController.updateActor(actorRequest);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 

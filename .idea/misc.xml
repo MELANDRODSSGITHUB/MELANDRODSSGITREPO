@@ -11,6 +11,8 @@
         <option value="$PROJECT_DIR$/DSS7-EUREKA-V1/pom.xml" />
         <option value="$PROJECT_DIR$/DSS8-CLIENT-V1/pom.xml" />
         <option value="$PROJECT_DIR$/DSS9-GATEWAY-V1/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/DSS10-MS-AUTH-V1/pom.xml" />
       </list>
     </option>
   </component>

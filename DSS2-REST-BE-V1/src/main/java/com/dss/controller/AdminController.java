@@ -1,9 +1,7 @@
 package com.dss.controller;
 
-import com.dss.entity.Actor;
 import com.dss.entity.Admin;
 import com.dss.model.AdminRequest;
-import com.dss.service.ActorService;
 import com.dss.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

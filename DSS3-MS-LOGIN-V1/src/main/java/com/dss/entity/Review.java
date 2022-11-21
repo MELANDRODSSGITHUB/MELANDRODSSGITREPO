@@ -42,5 +42,5 @@ public class Review {
     private Movie movie;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Admin admin;
+    private User user;
 }

@@ -1,7 +1,7 @@
 package com.dss.controller;
 
-import com.dss.entity.Actor;
 import com.dss.entity.Movie;
+import com.dss.model.AddMovieRequest;
 import com.dss.model.SearchMovieRequest;
 import com.dss.model.UpdateMovieRequest;
 import com.dss.service.MovieService;
@@ -33,8 +33,8 @@ public class MovieController {
     }
 
     @PostMapping(value = ADD_MOVIE_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addMovie(@Valid @RequestBody Movie movie) {
-        return new ResponseEntity<>(movieService.addMovie(movie), HttpStatus.CREATED);
+    public ResponseEntity<String> addMovie(@Valid @RequestBody AddMovieRequest addMovieRequest) {
+        return new ResponseEntity<>(movieService.addMovie(addMovieRequest), HttpStatus.CREATED);
     }
 
     @GetMapping(GET_ALL_MOVIE_URL)

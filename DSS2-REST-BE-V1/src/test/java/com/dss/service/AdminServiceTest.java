@@ -1,14 +1,10 @@
 package com.dss.service;
 
-import com.dss.entity.Actor;
 import com.dss.entity.Admin;
-import com.dss.entity.Movie;
-import com.dss.exception.DuplicateActorException;
 import com.dss.exception.DuplicateAdminException;
 import com.dss.exception.EmailAlreadyBeenUsedException;
 import com.dss.exception.LoginAuthenticationException;
 import com.dss.model.AdminRequest;
-import com.dss.repository.ActorRepository;
 import com.dss.repository.AdminRepository;
 import com.dss.util.DSSUtil;
 import com.dss.util.ResponseMsgConstant;
@@ -89,7 +85,7 @@ public class AdminServiceTest {
     }
 
     @Test
-    void doLoginSuccess() {
+    void doLoginSuccess() throws Exception {
         admin.setPassword(DSSUtil.passwordEncryption(admin.getPassword()));
         Optional<Admin> adminOptional = Optional.ofNullable(admin);
         Mockito.when(adminRepository.findAdminByEmailAndPassword(anyString(), anyString())).thenReturn(adminOptional);

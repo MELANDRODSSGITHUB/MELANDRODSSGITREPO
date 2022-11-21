@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DSS10-MS-AUTH-V1/DSS10-MS-AUTH-V1.iml" filepath="$PROJECT_DIR$/DSS10-MS-AUTH-V1/DSS10-MS-AUTH-V1.iml" />
       <module fileurl="file://$PROJECT_DIR$/DSS2-REST-BE-V1/DSS2-REST-BE-V1.iml" filepath="$PROJECT_DIR$/DSS2-REST-BE-V1/DSS2-REST-BE-V1.iml" />
       <module fileurl="file://$PROJECT_DIR$/DSS3-MS-LOGIN-V1/DSS3-MS-LOGIN-V1.iml" filepath="$PROJECT_DIR$/DSS3-MS-LOGIN-V1/DSS3-MS-LOGIN-V1.iml" />
       <module fileurl="file://$PROJECT_DIR$/DSS4-MS-MOVIE-V1/DSS4-MS-MOVIE-V1.iml" filepath="$PROJECT_DIR$/DSS4-MS-MOVIE-V1/DSS4-MS-MOVIE-V1.iml" />

@@ -4,7 +4,6 @@ import com.dss.entity.Admin;
 import com.dss.entity.Movie;
 import com.dss.entity.Review;
 import com.dss.exception.AdminNotFoundException;
-import com.dss.exception.DuplicateMovieException;
 import com.dss.exception.DuplicateReviewException;
 import com.dss.exception.MovieNotFoundException;
 import com.dss.model.ReviewRequest;
@@ -26,7 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class ReviewServiceTest {

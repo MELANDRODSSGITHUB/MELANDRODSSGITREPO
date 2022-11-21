@@ -6,6 +6,7 @@ import com.dss.exception.ActorNotFoundException;
 import com.dss.exception.DeleteNewMovieException;
 import com.dss.exception.DuplicateMovieException;
 import com.dss.exception.MovieNotFoundException;
+import com.dss.model.AddMovieRequest;
 import com.dss.model.SearchMovieRequest;
 import com.dss.model.UpdateMovieRequest;
 import com.dss.repository.ActorRepository;
@@ -45,15 +46,20 @@ public class MovieServiceImpl implements MovieService {
     /**
      * Add movie.
      *
-     * @param movie - contains movie details that will be added.
+     * @param movieRequest - contains movie details that will be added.
      * @return - Movie object that contains details of added movie.
      */
     @Override
-    public String addMovie(Movie movie) {
-        Optional<Movie> movieResult = movieRepository.findById(movie.getMovieId());
+    public String addMovie(AddMovieRequest movieRequest) {
+        Optional<Movie> movieResult = movieRepository.findById(movieRequest.getMovieId());
         if (movieResult.isPresent()) {
             throw new DuplicateMovieException(ResponseMsgConstant.FAILED_TO_ADD_MOVIE_MSG);
         }
+        Movie movie = Movie.builder()
+                .title(movieRequest.getTitle())
+                .cost(movieRequest.getCost())
+                .image(movieRequest.getImage())
+                .yearOfRelease(movieRequest.getYearOfRelease()).build();
         Movie addedMovie = movieRepository.save(movie);
 
         return ResponseMsgConstant.SUCCESSFULLY_ADDED_MOVIE_MSG.concat(" (id: "
@@ -75,7 +81,7 @@ public class MovieServiceImpl implements MovieService {
 
         Movie movie = movieResult.get();
         int currentYear = LocalDate.now().getYear();
-        if (currentYear >= movie.getYearOfRelease() && (currentYear - movie.getYearOfRelease() < 1)) {
+        if ((currentYear - movie.getYearOfRelease()) < 1) {
             throw new DeleteNewMovieException(ResponseMsgConstant.FAILED_TO_DELETE_MOVIE_MSG);
         }
 

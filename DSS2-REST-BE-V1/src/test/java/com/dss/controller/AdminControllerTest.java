@@ -109,6 +109,18 @@ class AdminControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError());
     }
 
+/*    @Test
+    void registerAdminThrowPasswordEncryptionException() throws Exception {
+        String requestJson = ow.writeValueAsString(adminRequest);
+        Mockito.when(adminService.addAdmin(any(AdminRequest.class))).thenThrow(new PasswordEncryptionException(ResponseMsgConstant.FAILED_TO_REGISTER_ADMIN_MSG));
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/dss2/api/admin/register")
+                        .content(requestJson)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .characterEncoding("utf-8"))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
+    }*/
+
     @Test
     void registerAdminThrowMethodArgumentNotValidException() throws Exception {
         AdminRequest badAdminRequest = adminRequest;

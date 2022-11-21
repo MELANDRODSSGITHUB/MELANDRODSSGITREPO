@@ -6,6 +6,7 @@ import com.dss.exception.ActorNotFoundException;
 import com.dss.exception.DeleteNewMovieException;
 import com.dss.exception.DuplicateMovieException;
 import com.dss.exception.MovieNotFoundException;
+import com.dss.model.AddMovieRequest;
 import com.dss.model.SearchMovieRequest;
 import com.dss.model.UpdateMovieRequest;
 import com.dss.repository.ActorRepository;
@@ -36,6 +37,8 @@ class MovieServiceTest {
     private Actor actor;
     private Movie movie;
 
+    private AddMovieRequest addMovieRequest;
+
     private UpdateMovieRequest updateMovieRequest;
     private SearchMovieRequest searchMovieRequest;
 
@@ -53,6 +56,10 @@ class MovieServiceTest {
                 .title("MOVIE TITLE TEST")
                 .yearOfRelease(2000)
                 .actors(new ArrayList<>()).build();
+        addMovieRequest = AddMovieRequest.builder()
+                .movieId(1).cost(250).image("test.png")
+                .title("MOVIE TITLE TEST")
+                .yearOfRelease(2000).build();
         updateMovieRequest = UpdateMovieRequest.builder()
                 .movieId(1).cost(200).image("updatedTest,png")
                 .build();
@@ -70,13 +77,13 @@ class MovieServiceTest {
     @Test
     void addMovieThrowDuplicateMovieException() {
         Mockito.when(movieRepository.findById(anyLong())).thenReturn(Optional.ofNullable(movie));
-        Assertions.assertThrows(DuplicateMovieException.class, () -> movieService.addMovie(movie));
+        Assertions.assertThrows(DuplicateMovieException.class, () -> movieService.addMovie(addMovieRequest));
     }
 
     @Test
     void addMovieSuccess() {
         Mockito.when(movieRepository.save(any(Movie.class))).thenReturn(movie);
-        Assertions.assertEquals(movieService.addMovie(movie),
+        Assertions.assertEquals(movieService.addMovie(addMovieRequest),
                 ResponseMsgConstant.SUCCESSFULLY_ADDED_MOVIE_MSG.concat(" (id: "
                         + movie.getMovieId() + "\t Title:" + movie.getTitle() + ")"));
     }
@@ -89,14 +96,14 @@ class MovieServiceTest {
 
     @Test
     void deleteMovieThrowDeleteNewMovieException() {
-        Movie testMovie = movie;
-        testMovie.setYearOfRelease(2022);
-        Mockito.when(movieRepository.findById(anyLong())).thenReturn(Optional.ofNullable(testMovie));
-        Assertions.assertThrows(DeleteNewMovieException.class, () -> movieService.deleteMovie(testMovie.getMovieId()));
+        movie.setYearOfRelease(2022);
+        Mockito.when(movieRepository.findById(anyLong())).thenReturn(Optional.ofNullable(movie));
+        Assertions.assertThrows(DeleteNewMovieException.class, () -> movieService.deleteMovie(movie.getMovieId()));
     }
 
     @Test
     void deleteMovieSuccess() {
+        movie.setYearOfRelease(2020);
         Mockito.when(movieRepository.findById(anyLong())).thenReturn(Optional.ofNullable(movie));
         Assertions.assertEquals(movieService.deleteMovie(anyLong()),
                 ResponseMsgConstant.SUCCESSFULLY_DELETED_MOVIE_MSG.concat(" (Id: " + movie.getMovieId()

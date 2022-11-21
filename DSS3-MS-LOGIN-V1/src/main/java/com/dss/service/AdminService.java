@@ -1,13 +1,13 @@
 package com.dss.service;
 
-import com.dss.entity.Admin;
-import com.dss.model.AdminRequest;
+import com.dss.entity.User;
+import com.dss.model.UserRequest;
 
 import java.util.List;
 
 public interface AdminService {
-    String addAdmin(AdminRequest adminRequest);
-    List<Admin> getAllAdmins();
+    String addAdmin(UserRequest userRequest);
+    List<User> getAllAdmins();
 
-    String doLogin(String email, String password);
+/*    String doLogin(String email, String password);*/
 }

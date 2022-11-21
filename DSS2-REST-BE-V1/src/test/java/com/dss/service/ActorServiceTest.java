@@ -6,6 +6,7 @@ import com.dss.exception.ActorHaveMovieDetailsException;
 import com.dss.exception.ActorNotFoundException;
 import com.dss.exception.DuplicateActorException;
 import com.dss.exception.MovieNotFoundException;
+import com.dss.model.ActorRequest;
 import com.dss.repository.ActorRepository;
 import com.dss.repository.MovieRepository;
 import com.dss.util.ResponseMsgConstant;
@@ -40,6 +41,8 @@ public class ActorServiceTest {
     private Actor actor;
     private Movie movie;
 
+    private ActorRequest actorRequest;
+
     @BeforeEach
     void setUp() {
         this.actorService = new ActorServiceImpl(this.actorRepository, this.movieRepository);
@@ -49,6 +52,11 @@ public class ActorServiceTest {
                 .lastName("TEST")
                 .age(32).gender("M")
                 .movies(new ArrayList<>()).build();
+        actorRequest = ActorRequest.builder()
+                .actorId(1)
+                .firstName("TEST")
+                .lastName("TEST")
+                .age(32).gender("M").build();
         movie = Movie.builder()
                 .movieId(1).cost(250).image("test.png")
                 .title("MOVIE TITLE TEST")
@@ -65,13 +73,13 @@ public class ActorServiceTest {
     @Test
     void addActorThrowDuplicateActorException(){
         Mockito.when(actorRepository.findById(anyLong())).thenReturn(Optional.ofNullable(actor));
-        Assertions.assertThrows(DuplicateActorException.class,() -> actorService.addActor(actor));
+        Assertions.assertThrows(DuplicateActorException.class,() -> actorService.addActor(actorRequest));
     }
 
     @Test
     void addActorSuccess(){
         Mockito.when(actorRepository.save(any(Actor.class))).thenReturn(actor);
-        Assertions.assertEquals(actorService.addActor(actor),
+        Assertions.assertEquals(actorService.addActor(actorRequest),
                 ResponseMsgConstant.SUCCESSFULLY_ADDED_ACTOR_MSG +
                 " (Id: " + actor.getActorId() + "\t Name:" + actor.getFirstName()
                 + " " + actor.getLastName() + ")");
@@ -105,16 +113,17 @@ public class ActorServiceTest {
     @Test
     void updateActorThrowActorNotFoundException(){
         Mockito.when(actorRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
-        Assertions.assertThrows(ActorNotFoundException.class,() -> actorService.updateActor(actor));
+        Assertions.assertThrows(ActorNotFoundException.class,() -> actorService.updateActor(actorRequest));
     }
 
     @Test
     void updateActorSuccess(){
         Mockito.when(actorRepository.findById(anyLong())).thenReturn(Optional.ofNullable(actor));
-        Assertions.assertEquals(actorService.updateActor(actor),
+        Mockito.when(actorRepository.save(any(Actor.class))).thenReturn(actor);
+        Assertions.assertEquals(actorService.updateActor(actorRequest),
                 ResponseMsgConstant.SUCCESSFULLY_UPDATED_ACTOR_MSG +
-                        " (Id: " + actor.getActorId() + "\t Name:" + actor.getFirstName()
-                        + " " + actor.getLastName() + ")");
+                        " (Id: " + actorRequest.getActorId() + "\t Name:" + actorRequest.getFirstName()
+                        + " " + actorRequest.getLastName() + ")");
     }
 
 

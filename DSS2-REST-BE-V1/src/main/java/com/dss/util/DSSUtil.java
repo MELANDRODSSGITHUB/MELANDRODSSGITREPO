@@ -1,5 +1,7 @@
 package com.dss.util;
 
+import com.dss.exception.PasswordEncryptionException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -23,7 +25,7 @@ public final class DSSUtil {
             }
             hashedPassword = stringBuilder.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("No Such Algorithm....", e);
+            throw new PasswordEncryptionException("No Such Algorithm....", e);
         }
 
         return hashedPassword;

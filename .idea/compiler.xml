@@ -12,6 +12,7 @@
         <module name="DSS9-GATEWAY-V1" />
         <module name="DSS5-MS-ACTOR-V1" />
         <module name="DSS2-REST-BE-V1" />
+        <module name="DSS10-MS-AUTH-V1" />
         <module name="DSS4-MS-MOVIE-V1" />
         <module name="DSS3-MS-LOGIN-V1" />
         <module name="DSS7-EUREKA-V1" />
@@ -19,8 +20,9 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="DSS1-UI-V1" target="1.8" />
+      <module name="DSS10-MS-AUTH-V1" target="11" />
       <module name="DSS2-REST-BE-V1" target="11" />
-      <module name="DSS3-MS-LOGIN-V1" target="1.8" />
+      <module name="DSS3-MS-LOGIN-V1" target="9" />
       <module name="DSS4-MS-MOVIE-V1" target="11" />
       <module name="DSS5-MS-ACTOR-V1" target="11" />
       <module name="DSS6-MS-REVIEW-V1" target="11" />
@@ -32,6 +34,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="DSS1-UI-V1" options="-parameters" />
+      <module name="DSS10-MS-AUTH-V1" options="-parameters" />
       <module name="DSS2-REST-BE-V1" options="-parameters" />
       <module name="DSS3-MS-LOGIN-V1" options="-parameters" />
       <module name="DSS4-MS-MOVIE-V1" options="-parameters" />
